@@ -310,7 +310,7 @@ Transform:
   - {fileID: 7754757663498760624}
   - {fileID: 7754757664596701323}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7754757664556754831
 MonoBehaviour:
@@ -332,6 +332,7 @@ MonoBehaviour:
   knockbackDeathSpeedY: 8
   deathTorque: 1
   applyKnockBack: 1
+  hitParticle: {fileID: 2492003104702295352, guid: c845f8a8fb15b42448c820e5a37cd4f4, type: 3}
 --- !u!1 &7754757664596701320
 GameObject:
   m_ObjectHideFlags: 0

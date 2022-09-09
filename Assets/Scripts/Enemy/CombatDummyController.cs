@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CombatDummyController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CombatDummyController : MonoBehaviour
     private float knockbackDeathSpeedX, knockbackDeathSpeedY, deathTorque;
     [SerializeField]
     private bool applyKnockBack;
+    [SerializeField]
+    private GameObject hitParticle;
 
     private float currentHealth;
     private float knockbackStart;
@@ -46,13 +49,13 @@ public class CombatDummyController : MonoBehaviour
         CheckKnockback();
     }
 
-    public void Damage(float amount)
+    public void Damage(float[] attackDetails)
     {
-        Debug.Log("taken damage");
-        currentHealth -= amount;
-        playerFacingDirection = pc.GetFacingDirection();
+        currentHealth -= attackDetails[0];
+        Instantiate(hitParticle, animatorAlive.transform.position, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
+        //playerFacingDirection = pc.GetFacingDirection();
 
-        isFacingLeft = (playerFacingDirection == 1) ? true : false;
+        isFacingLeft = (attackDetails[1] > aliveGO.transform.position.x) ? true : false;
         animatorAlive.SetBool("playerOnLeft", isFacingLeft);
         animatorAlive.SetTrigger("damage");
 

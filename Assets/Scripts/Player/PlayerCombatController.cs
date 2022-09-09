@@ -66,7 +66,7 @@ public class PlayerCombatController : MonoBehaviour
         var detectedObjects = Physics2D.OverlapCircleAll(attack1HitboxPos.position, attack1Radius, whatIsDamageable); 
         foreach(var detectedObject in detectedObjects)
         {
-            detectedObject.transform.parent.SendMessage("Damage", attack1Damage);
+            detectedObject.transform.parent.SendMessage("Damage", new[] {attack1Damage, transform.position.x});
         }
     }
 
