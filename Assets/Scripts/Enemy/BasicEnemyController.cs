@@ -17,17 +17,30 @@ public class BasicEnemyController : MonoBehaviour
         wallCheckDistance,
         groundCheckDistance,
         movementSpeed,
-        maxHealth;
-    [SerializeField]
-    private float knockbackDuration;
+        maxHealth,
+        knockbackDuration,
+        lastTouchDamageTime,
+        touchDamageCooldown,
+        touchDamageDuration,
+        touchDamage,
+        touchDamageWidth,
+        touchDamageHeight;
     [SerializeField]
     private Vector2 knockbackSpeed;
     [SerializeField]
-    private GameObject hitParticle, deathChunkParticle, deathBloodParticle;
+    private GameObject 
+        hitParticle, 
+        deathChunkParticle, 
+        deathBloodParticle;
     [SerializeField]
-    private Transform groundCheck, wallCheck;
+    private Transform 
+        groundCheck, 
+        wallCheck,
+        touchDamageCheck;
     [SerializeField]
-    private LayerMask whatIsGround;
+    private LayerMask 
+        whatIsGround,
+        whatIsPlayer;
 
     private float knockbackStartTime;
     private float currentHealth;
@@ -37,8 +50,12 @@ public class BasicEnemyController : MonoBehaviour
     private State currentState;
     private GameObject alive;
     private Rigidbody2D aliveRB;
-    private Vector2 movement;
     private Animator aliveAnimator;
+    private Vector2 
+        movement,
+        touchDamageBotLeft,
+        touchDamageTopRight;
+
 
     private void Start()
     {
@@ -67,6 +84,8 @@ public class BasicEnemyController : MonoBehaviour
     {
         groundDetected = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance,whatIsGround);
         wallDetected = Physics2D.Raycast(wallCheck.position, Vector2.right, wallCheckDistance, whatIsGround);
+
+        CheckTouchDamage();
 
         if(!groundDetected || wallDetected)
         {
@@ -136,6 +155,24 @@ public class BasicEnemyController : MonoBehaviour
         else
         {
             SwitchState(State.Dead);
+        }
+    }
+
+    private void CheckTouchDamage()
+    {
+        if (Time.time >= lastTouchDamageTime + touchDamageCooldown)
+        {
+            touchDamageBotLeft.Set(touchDamageCheck.position.x - (touchDamageWidth / 2), 
+                touchDamageCheck.position.y - (touchDamageHeight / 2));
+            touchDamageTopRight.Set(touchDamageCheck.position.x + (touchDamageWidth / 2), 
+                touchDamageCheck.position.y + (touchDamageHeight / 2));
+
+            Collider2D hit = Physics2D.OverlapArea(touchDamageBotLeft,touchDamageTopRight, whatIsPlayer);
+            if (!hit)
+            {
+                lastTouchDamageTime = Time.time;
+                hit.SendMessage("Damage", new[] { touchDamage, transform.position.x });
+            }
         }
     }
 

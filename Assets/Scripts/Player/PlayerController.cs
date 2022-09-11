@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Vector2 debugVal;
     public int amountOfJumps = 1;
     public float airGravity = 0.5f;
     public float movementForseInAir;
@@ -50,12 +49,18 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool canMove = true;
     private bool canFlip = true;
+    private bool knockback;
+
     private int facingDirection = 1;
     private int amountOfJumpsLeft = 0;
     private float movementInputDirection;
     private float dashTimeLeft;
     private float lastImageXpos;
     private float lastDash = -100;
+    private float knockbackStartTime;
+    //[SerializeField]
+    //private
+
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -70,7 +75,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        debugVal = rb.velocity;
         CheckInput();
         CheckMovementDiraction();
         UpdateAnimations();
