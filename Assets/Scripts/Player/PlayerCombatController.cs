@@ -12,6 +12,8 @@ public class PlayerCombatController : MonoBehaviour
     private Transform attack1HitboxPos;
     [SerializeField]
     private LayerMask whatIsDamageable;
+    private PlayerController PC;
+    private PlayerStats PS;
 
     private bool gotInput;
     private bool isAttacking;
@@ -21,6 +23,8 @@ public class PlayerCombatController : MonoBehaviour
 
     private void Start()
     {
+        PS = GetComponent<PlayerStats>();
+        PC = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         animator.SetBool("canAttack", combatEnabled);
     }
@@ -75,6 +79,17 @@ public class PlayerCombatController : MonoBehaviour
         isAttacking = false;
         animator.SetBool("isAttacking", isAttacking);
         animator.SetBool("attack_1", false);
+    }
+
+    private void Damage(float[] attackDetails)
+    {
+        if (!PC.GetDash())
+        {
+            var direction = (attackDetails[1] < transform.position.x) ? 1 : -1;
+            PS.DecreaseHealth(attackDetails[0]);
+            PC.Knockback(direction);
+            
+        }
     }
 
     private void OnDrawGizmos()

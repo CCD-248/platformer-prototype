@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour
     private bool isTouchingWall;
     private bool isWallSliding;
 
-
+    [SerializeField]
+    private Vector2 knockbackSpeed; 
     private Vector2 ledgePosBot;
     private Vector2 ledgePos1;
     private Vector2 ledgePos2;
@@ -58,9 +59,8 @@ public class PlayerController : MonoBehaviour
     private float lastImageXpos;
     private float lastDash = -100;
     private float knockbackStartTime;
-    //[SerializeField]
-    //private
-
+    [SerializeField]
+    private float knockbackDuration;
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
         CheckLedgeClimb();
         CheckIfWallSliding();
         CheckDashing();
+        CheckKnockback();
     }
 
     private void FixedUpdate()
@@ -93,6 +94,22 @@ public class PlayerController : MonoBehaviour
     private void CheckIfWallSliding()
     {
         isWallSliding = (isTouchingWall && !isGrounded && rb.velocity.y < 0 && !canClimbLedge) ? true : false;
+    }
+
+    public void Knockback(int direction)
+    {
+        knockback = true;
+        knockbackStartTime = Time.time;
+        rb.velocity = new Vector2(knockbackSpeed.x * direction, knockbackSpeed.y);
+    }
+
+    private void CheckKnockback()
+    {
+        if (Time.time > knockbackStartTime + knockbackDuration && knockback)
+        {
+            knockback = false;
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+        }
     }
 
     private void CheckLedgeClimb()
@@ -158,7 +175,7 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
-
+        
         if(Input.GetButtonDown("Dash"))
         {
             if (Time.time >= (lastDash + dashCoolDown))
@@ -166,6 +183,11 @@ public class PlayerController : MonoBehaviour
                 AttemptToDash();
             }
         }
+    }
+
+    public bool GetDash()
+    {
+        return isDashing;
     }
 
     private void AttemptToDash()
@@ -207,7 +229,7 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyMovement()
     {
-        if (canMove)
+        if (canMove && !knockback)
         {
             if (isGrounded)
             {
@@ -287,8 +309,7 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
-
-        isWalking = (rb.velocity.x != 0) ? true : false;
+        isWalking = (isGrounded && movementInputDirection != 0) ? true : false;
     }
 
     public void EnableFlip()
@@ -308,7 +329,7 @@ public class PlayerController : MonoBehaviour
 
     private void Flip()
     {
-        if (!isWallSliding && canFlip)
+        if (!isWallSliding && canFlip && !knockback)
         {
             facingDirection *= -1;
             isFacingRight = !isFacingRight;
@@ -323,6 +344,8 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("yVelosity", rb.velocity.y);
         animator.SetBool("wallSlide", isWallSliding);
     }
+
+
 
     //private void OnDrawGizmos()
     //{

@@ -168,7 +168,7 @@ public class BasicEnemyController : MonoBehaviour
                 touchDamageCheck.position.y + (touchDamageHeight / 2));
 
             Collider2D hit = Physics2D.OverlapArea(touchDamageBotLeft,touchDamageTopRight, whatIsPlayer);
-            if (!hit)
+            if (hit != null)
             {
                 lastTouchDamageTime = Time.time;
                 hit.SendMessage("Damage", new[] { touchDamage, transform.position.x });
