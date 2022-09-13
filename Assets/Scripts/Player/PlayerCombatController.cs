@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
 {
+    [SerializeField] private float stunDamageAmount;
     [SerializeField]
     private bool combatEnabled;
     [SerializeField]
@@ -20,6 +21,7 @@ public class PlayerCombatController : MonoBehaviour
     private bool isfirstAttack;
     private float lastInputType = Mathf.NegativeInfinity;
     private Animator animator;
+    private AttackDetails attackDetails;
 
     private void Start()
     {
@@ -67,10 +69,13 @@ public class PlayerCombatController : MonoBehaviour
 
     public void CheckAttackHitbox()
     {
-        var detectedObjects = Physics2D.OverlapCircleAll(attack1HitboxPos.position, attack1Radius, whatIsDamageable); 
-        foreach(var detectedObject in detectedObjects)
+        var detectedObjects = Physics2D.OverlapCircleAll(attack1HitboxPos.position, attack1Radius, whatIsDamageable);
+        attackDetails.amountOfDamage = attack1Damage;
+        attackDetails.position = transform.position;
+        attackDetails.stunDamageAmount = stunDamageAmount;
+        foreach (var detectedObject in detectedObjects)
         {
-            detectedObject.transform.parent.SendMessage("Damage", new[] {attack1Damage, transform.position.x});
+            detectedObject.transform.parent.SendMessage("Damage", attackDetails);
         }
     }
 
@@ -81,12 +86,12 @@ public class PlayerCombatController : MonoBehaviour
         animator.SetBool("attack_1", false);
     }
 
-    private void Damage(float[] attackDetails)
+    private void Damage(AttackDetails attack)
     {
         if (!PC.GetDash())
         {
-            var direction = (attackDetails[1] < transform.position.x) ? 1 : -1;
-            PS.DecreaseHealth(attackDetails[0]);
+            var direction = (attack.position.x < transform.position.x) ? 1 : -1;
+            PS.DecreaseHealth(attack.amountOfDamage);
             PC.Knockback(direction);
             
         }
