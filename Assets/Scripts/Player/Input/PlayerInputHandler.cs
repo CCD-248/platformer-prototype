@@ -6,30 +6,20 @@ using UnityEngine.InputSystem;
 public class PlayerInputHandler : MonoBehaviour
 {
 
-    private Vector2 movementInput;
+    public Vector2 RawMovementInput { get; private set; }
+    public int NormaInputX { get; private set; }
+    public int NormaInputY { get; private set; }
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
-        movementInput = context.ReadValue<Vector2>();
-        Debug.Log(movementInput);
+        RawMovementInput = context.ReadValue<Vector2>();
+        NormaInputX = (int)(RawMovementInput * Vector2.right).normalized.x;
+        NormaInputY = (int)(RawMovementInput * Vector2.up).normalized.y;
     }
 
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            Debug.Log("jump button pushed down");
-        }
 
-        if (context.performed)
-        {
-            Debug.Log("jump button is being held down");
-        }
-
-        if (context.canceled)
-        {
-            Debug.Log("jump button is has been released");
-        }
     }
 }
