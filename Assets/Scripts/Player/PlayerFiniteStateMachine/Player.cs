@@ -8,6 +8,10 @@ public class Player : MonoBehaviour
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerIdleState IdlePlayerState { get; private set; }
     public PlayerMoveState MovePlayerState { get; private set; }
+    public PlayerJumpState JumpPlayerState { get; private set; }
+    public PlayerLandState LandPlayerState { get; private set; }
+    public PlayerInAirState InAirPlayerState { get; private set; }
+
 
     [SerializeField] private PlayerData playerData;
     #endregion
@@ -18,19 +22,27 @@ public class Player : MonoBehaviour
     public Rigidbody2D Rigidbody { get; private set; }
     #endregion
 
-    
+    #region Check Variables
+    [SerializeField] private Transform groundCheck;
+
+    #endregion
+
+    #region Other Variables
     public int FacingDirection { get; private set; }
     public Vector2 CurrentVelocity { get; private set; }
-
-
-
     private Vector2 workSpace;
+    #endregion
 
+    #region Unity Funcions
     private void Awake()
     {
         StateMachine = new PlayerStateMachine();
         IdlePlayerState = new PlayerIdleState(this, StateMachine, playerData, "idle");
         MovePlayerState = new PlayerMoveState(this, StateMachine, playerData, "move");
+        JumpPlayerState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
+        InAirPlayerState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
+        LandPlayerState = new PlayerLandState(this, StateMachine, playerData, "land");
+
     }
 
     private void Start()
@@ -52,7 +64,9 @@ public class Player : MonoBehaviour
     {
         StateMachine.CurrentState.PhysicsUpdate();
     }
+    #endregion
 
+    #region Set Functions
     public void SetVelocityX(float vel)
     {
         workSpace.Set(vel, CurrentVelocity.y);
@@ -60,6 +74,15 @@ public class Player : MonoBehaviour
         CurrentVelocity = workSpace;
     }
 
+    public void SetVelocityY(float vel)
+    {
+        workSpace.Set(CurrentVelocity.x, vel);
+        Rigidbody.velocity = workSpace;
+        CurrentVelocity = workSpace;
+    }
+    #endregion
+
+    #region Check Functions
     public void CheckIfShouldFlip(int xInput)
     {
         if (xInput != 0 && xInput != FacingDirection)
@@ -68,9 +91,22 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsGround);
+
+    #endregion
+
+    #region Other Functions
+
+    public void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
+
+    public void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
+
     private void Flip()
     {
         FacingDirection *= -1;
         transform.Rotate(0, 180f, 0);
     }
+
+    #endregion
 }
