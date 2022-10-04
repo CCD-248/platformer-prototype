@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: Player Data
   m_EditorClassIdentifier: 
   movementVelocity: 10
-  jumpVelocity: 15
+  jumpVelocity: 20
+  amountOfJumps: 2
+  jumpHeightMul: 0.5
+  wallCheckRadius: 0.5
+  startOffset: {x: 0.4, y: 0.9}
+  stopOffset: {x: 0.4, y: 0.7}
   groundCheckRaius: 0.3
   whatIsGround:
     serializedVersion: 2

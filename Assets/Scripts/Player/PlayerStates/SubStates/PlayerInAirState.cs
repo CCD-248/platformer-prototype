@@ -9,6 +9,8 @@ public class PlayerInAirState : PlayerState
     private bool jumpInputStop;
     private bool jumpInput;
     private bool isJumping;
+    private bool isTouchingLedge;
+    private bool isTouchingWall;
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animationName) : base(player, stateMachine, playerData, animationName)
     {
@@ -18,6 +20,13 @@ public class PlayerInAirState : PlayerState
     {
         base.DoChecks();
         isGrounded = player.CheckIfGrounded();
+        isTouchingWall = player.CheckIsTouchingWall();
+        isTouchingLedge = player.CheckIsTouchingLedge();
+
+        if (isTouchingWall && !isTouchingLedge)
+        {
+            player.LedgeClimbPlayerState.SetDetectedPosition(player.transform.position);
+        }
     }
 
     public override void Enter()
@@ -43,8 +52,13 @@ public class PlayerInAirState : PlayerState
         {
             stateMachine.ChangeState(player.LandPlayerState);
         }
+        else if (isTouchingWall && !isTouchingLedge)
+        {
+            stateMachine.ChangeState(player.LedgeClimbPlayerState);
+        }
         else if (jumpInput && player.JumpPlayerState.CanJump())
         {
+            player.InputHandler.UseJumpInput();
             stateMachine.ChangeState(player.JumpPlayerState);
         }
         else

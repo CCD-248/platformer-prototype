@@ -5,35 +5,45 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region State Variables
+
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerIdleState IdlePlayerState { get; private set; }
     public PlayerMoveState MovePlayerState { get; private set; }
     public PlayerJumpState JumpPlayerState { get; private set; }
     public PlayerLandState LandPlayerState { get; private set; }
     public PlayerInAirState InAirPlayerState { get; private set; }
-
+    public PlayerLedgeClimbState LedgeClimbPlayerState { get; private set; }
 
     [SerializeField] private PlayerData playerData;
+
     #endregion
 
     #region Components Variables
+
     public Animator Animator { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
+
     #endregion
 
     #region Check Variables
+
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private Transform ledgeCheck;
 
     #endregion
 
     #region Other Variables
+
     public int FacingDirection { get; private set; }
     public Vector2 CurrentVelocity { get; private set; }
     private Vector2 workSpace;
+
     #endregion
 
     #region Unity Funcions
+
     private void Awake()
     {
         StateMachine = new PlayerStateMachine();
@@ -42,6 +52,7 @@ public class Player : MonoBehaviour
         JumpPlayerState = new PlayerJumpState(this, StateMachine, playerData, "inAir");
         InAirPlayerState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandPlayerState = new PlayerLandState(this, StateMachine, playerData, "land");
+        LedgeClimbPlayerState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledge");
 
     }
 
@@ -58,15 +69,24 @@ public class Player : MonoBehaviour
     {
         CurrentVelocity = Rigidbody.velocity;
         StateMachine.CurrentState.LogicUpdate();
+
     }
 
     private void FixedUpdate()
     {
         StateMachine.CurrentState.PhysicsUpdate();
     }
+
     #endregion
 
     #region Set Functions
+
+    public void SetVelocityZero()
+    {
+        Rigidbody.velocity = Vector3.zero;
+        CurrentVelocity = Vector2.zero;
+    }
+
     public void SetVelocityX(float vel)
     {
         workSpace.Set(vel, CurrentVelocity.y);
@@ -80,9 +100,11 @@ public class Player : MonoBehaviour
         Rigidbody.velocity = workSpace;
         CurrentVelocity = workSpace;
     }
+
     #endregion
 
     #region Check Functions
+
     public void CheckIfShouldFlip(int xInput)
     {
         if (xInput != 0 && xInput != FacingDirection)
@@ -91,6 +113,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool CheckIsTouchingWall()=> Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckRadius, playerData.whatIsGround);
+
+    public bool CheckIsTouchingLedge() => Physics2D.Raycast(ledgeCheck.position, Vector2.right * FacingDirection, playerData.wallCheckRadius, playerData.whatIsGround);
 
     public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsGround);
 
@@ -108,5 +133,17 @@ public class Player : MonoBehaviour
         transform.Rotate(0, 180f, 0);
     }
 
+    public Vector2 GetCornerPostion()
+    {
+        var xHit = Physics2D.Raycast(wallCheck.position, Vector2.right * FacingDirection, playerData.wallCheckRadius, playerData.whatIsGround);
+        var xDist = xHit.distance;
+        workSpace.Set(xDist * FacingDirection, 0);
+        var yHit = Physics2D.Raycast(ledgeCheck.position + (Vector3)(workSpace), Vector2.down , ledgeCheck.position.y - wallCheck.position.y, playerData.whatIsGround);
+        var yDist = yHit.distance;
+        workSpace.Set(wallCheck.position.x + xDist* FacingDirection,ledgeCheck.position.y - yDist);
+        return workSpace;
+    }
+
     #endregion
+
 }

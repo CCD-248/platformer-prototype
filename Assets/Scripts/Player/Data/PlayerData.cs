@@ -15,6 +15,13 @@ public class PlayerData : ScriptableObject
     [Header("In Air State")]
     public float jumpHeightMul = 0.5f;
 
+    [Header("Wall State")]
+    public float wallCheckRadius = 0.3f;
+
+    [Header("Ledge climb State")]
+    public Vector2 startOffset;
+    public Vector2 stopOffset;
+
     [Header("Check Variables")]
     public float groundCheckRaius = 0.3f;
     public LayerMask whatIsGround;
