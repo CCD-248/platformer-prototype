@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public string currentState;
 
+    public PlayerDashState DashState { get; private set; }
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerIdleState IdlePlayerState { get; private set; }
     public PlayerMoveState MovePlayerState { get; private set; }
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
         LandPlayerState = new PlayerLandState(this, StateMachine, playerData, "land");
         LedgeClimbPlayerState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledge");
         PlayerOnPlatformState = new PlayerOnPlatformState(this, StateMachine, playerData, "idle");
-
+        DashState = new PlayerDashState(this, StateMachine, playerData, "move");
     }
 
     private void Start()

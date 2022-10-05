@@ -16,9 +16,13 @@ MonoBehaviour:
   jumpVelocity: 20
   amountOfJumps: 2
   jumpHeightMul: 0.5
+  platformCheckTime: 0.1
   wallCheckRadius: 0.5
   startOffset: {x: 0.4, y: 0.9}
   stopOffset: {x: 0.4, y: 0.7}
+  dashCooldownTime: 1
+  dashSpeed: 30
+  dashTime: 0.2
   groundCheckRaius: 0.3
   whatIsGround:
     serializedVersion: 2

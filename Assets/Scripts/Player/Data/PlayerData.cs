@@ -23,6 +23,13 @@ public class PlayerData : ScriptableObject
     public Vector2 startOffset;
     public Vector2 stopOffset;
 
+    [Header("Dash State")]
+    public float dashCooldownTime = 0.5f;
+    public float dashSpeed = 15f;
+    public float dashTime = 0.2f;
+    public float dashDistanceBetweenImages = 0.1f;
+
+
     [Header("Check Variables")]
     public float groundCheckRaius = 0.3f;
     public LayerMask whatIsGround;
