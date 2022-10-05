@@ -11,6 +11,7 @@ public class PlayerInAirState : PlayerState
     private bool isJumping;
     private bool isTouchingLedge;
     private bool isTouchingWall;
+    private bool isOnPlatform;
 
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animationName) : base(player, stateMachine, playerData, animationName)
     {
@@ -22,6 +23,7 @@ public class PlayerInAirState : PlayerState
         isGrounded = player.CheckIfGrounded();
         isTouchingWall = player.CheckIsTouchingWall();
         isTouchingLedge = player.CheckIsTouchingLedge();
+        isOnPlatform = player.CheckIsOnPlatform();
 
         if (isTouchingWall && !isTouchingLedge)
         {
@@ -47,8 +49,7 @@ public class PlayerInAirState : PlayerState
         jumpInputStop = player.InputHandler.JumpInputStop;
 
         CheckJumpMul();
-
-        if (isGrounded && player.CurrentVelocity.y < 0.01f)
+        if (isGrounded && Time.time >= startTime + playerData.platformCheckTime)
         {
             stateMachine.ChangeState(player.LandPlayerState);
         }
@@ -61,11 +62,10 @@ public class PlayerInAirState : PlayerState
             player.InputHandler.UseJumpInput();
             stateMachine.ChangeState(player.JumpPlayerState);
         }
-        else
+        else 
         {
             player.CheckIfShouldFlip(xInput);
             player.SetVelocityX(playerData.movementVelocity * xInput);
-
             player.Animator.SetFloat("yVelocity", player.CurrentVelocity.y);
             player.Animator.SetFloat("xVelocity", Mathf.Abs(player.CurrentVelocity.x));
         }

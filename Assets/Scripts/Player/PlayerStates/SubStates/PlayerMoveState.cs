@@ -28,7 +28,11 @@ public class PlayerMoveState : PlayerGroundedState
         base.LogicUpdate();
         player.CheckIfShouldFlip(xInput);
         player.SetVelocityX(playerData.movementVelocity * xInput);
-        if (xInput == 0)
+        if (xInput == 0 && isOnPlatform)
+        {
+            stateMachine.ChangeState(player.PlayerOnPlatformState);
+        }
+        else if (xInput == 0)
         {
             stateMachine.ChangeState(player.IdlePlayerState);
         }

@@ -39,7 +39,6 @@ public class PlayerLedgeClimbState : PlayerState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("exit climb " + stopPos.ToString());
         player.transform.position = stopPos;
     }
 

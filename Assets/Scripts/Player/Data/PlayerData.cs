@@ -14,6 +14,7 @@ public class PlayerData : ScriptableObject
 
     [Header("In Air State")]
     public float jumpHeightMul = 0.5f;
+    public float platformCheckTime = 0.1f;
 
     [Header("Wall State")]
     public float wallCheckRadius = 0.3f;
@@ -25,4 +26,5 @@ public class PlayerData : ScriptableObject
     [Header("Check Variables")]
     public float groundCheckRaius = 0.3f;
     public LayerMask whatIsGround;
+    public LayerMask whatIsPlatform;
 }

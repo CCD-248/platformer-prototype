@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     #region State Variables
 
+    public string currentState;
+
     public PlayerStateMachine StateMachine { get; private set; }
     public PlayerIdleState IdlePlayerState { get; private set; }
     public PlayerMoveState MovePlayerState { get; private set; }
@@ -13,6 +15,8 @@ public class Player : MonoBehaviour
     public PlayerLandState LandPlayerState { get; private set; }
     public PlayerInAirState InAirPlayerState { get; private set; }
     public PlayerLedgeClimbState LedgeClimbPlayerState { get; private set; }
+
+    public PlayerOnPlatformState PlayerOnPlatformState { get; private set; }
 
     [SerializeField] private PlayerData playerData;
 
@@ -53,6 +57,7 @@ public class Player : MonoBehaviour
         InAirPlayerState = new PlayerInAirState(this, StateMachine, playerData, "inAir");
         LandPlayerState = new PlayerLandState(this, StateMachine, playerData, "land");
         LedgeClimbPlayerState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledge");
+        PlayerOnPlatformState = new PlayerOnPlatformState(this, StateMachine, playerData, "idle");
 
     }
 
@@ -67,6 +72,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        currentState = StateMachine.CurrentState.ToString();
         CurrentVelocity = Rigidbody.velocity;
         StateMachine.CurrentState.LogicUpdate();
 
@@ -101,6 +107,13 @@ public class Player : MonoBehaviour
         CurrentVelocity = workSpace;
     }
 
+    public void SetVelocity(Vector2 vel)
+    {
+        workSpace.Set(vel.x, vel.y);
+        Rigidbody.velocity = workSpace;
+        CurrentVelocity = workSpace;
+    }
+
     #endregion
 
     #region Check Functions
@@ -117,7 +130,9 @@ public class Player : MonoBehaviour
 
     public bool CheckIsTouchingLedge() => Physics2D.Raycast(ledgeCheck.position, Vector2.right * FacingDirection, playerData.wallCheckRadius, playerData.whatIsGround);
 
-    public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsGround);
+    public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsGround) || CheckIsOnPlatform();
+
+    public bool CheckIsOnPlatform() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsPlatform);
 
     #endregion
 
@@ -142,6 +157,13 @@ public class Player : MonoBehaviour
         var yDist = yHit.distance;
         workSpace.Set(wallCheck.position.x + xDist* FacingDirection,ledgeCheck.position.y - yDist);
         return workSpace;
+    }
+
+    public Rigidbody2D GetPlatformRb()
+    {
+        var colider = Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsPlatform);
+        var rb = colider.GetComponent<Rigidbody2D>();
+        return rb;
     }
 
     #endregion
