@@ -16,8 +16,10 @@ public class Player : MonoBehaviour
     public PlayerLandState LandPlayerState { get; private set; }
     public PlayerInAirState InAirPlayerState { get; private set; }
     public PlayerLedgeClimbState LedgeClimbPlayerState { get; private set; }
-
     public PlayerOnPlatformState PlayerOnPlatformState { get; private set; }
+    public PlayerAttackState PrimaryAttackState { get; private set; }
+    public PlayerAttackState SecondaryAttackState { get; private set; }
+
 
     [SerializeField] private PlayerData playerData;
 
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     public Animator Animator { get; private set; }
     public PlayerInputHandler InputHandler { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
+    public PlayerInventory Inventory { get; private set; }
 
     #endregion
 
@@ -60,11 +63,17 @@ public class Player : MonoBehaviour
         LedgeClimbPlayerState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledge");
         PlayerOnPlatformState = new PlayerOnPlatformState(this, StateMachine, playerData, "idle");
         DashState = new PlayerDashState(this, StateMachine, playerData, "move");
+        PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
+        SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
     }
 
     private void Start()
     {
         FacingDirection = 1;
+        Inventory = GetComponent<PlayerInventory>();
+        PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
+        //SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
+
         Rigidbody = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
         InputHandler = GetComponent<PlayerInputHandler>();

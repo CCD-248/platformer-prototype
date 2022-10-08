@@ -49,7 +49,17 @@ public class PlayerInAirState : PlayerState
         DashInput = player.InputHandler.DashInput;
 
         CheckJumpMul();
-        if (isGrounded && Time.time >= startTime + playerData.platformCheckTime)
+
+        if (player.InputHandler.AttackInput[(int)CombatInputs.primary])
+        {
+            stateMachine.ChangeState(player.PrimaryAttackState);
+        }
+        else if (player.InputHandler.AttackInput[(int)CombatInputs.secondary])
+        {
+            stateMachine.ChangeState(player.SecondaryAttackState);
+        }
+
+        else if (isGrounded && Time.time >= startTime + playerData.platformCheckTime)
         {
             stateMachine.ChangeState(player.LandPlayerState);
         }

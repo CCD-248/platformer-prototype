@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool DashInput { get; private set; }
     public bool JumpInputStop { get; private set; }
 
+    public bool[] AttackInput { get; private set; }
+
     [SerializeField] private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
 
@@ -21,13 +24,42 @@ public class PlayerInputHandler : MonoBehaviour
         ChheckJumpInputTime();
     }
 
+    private void Start()
+    {
+        int count = Enum.GetValues(typeof(CombatInputs)).Length;
+        AttackInput = new bool[count];
+    }
+
+    public void OnPrimaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInput[(int)CombatInputs.primary] = true;
+        }
+        if (context.canceled)
+        {
+            AttackInput[(int)CombatInputs.primary] = false;
+        }
+    }
+
+    public void OnSecondaryAttackInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            AttackInput[(int)CombatInputs.secondary] = true;
+        }
+        if (context.canceled)
+        {
+            AttackInput[(int)CombatInputs.secondary] = false;
+        }
+    }
+
     public void OnMoveInput(InputAction.CallbackContext context)
     {
         RawMovementInput = context.ReadValue<Vector2>();
         NormaInputX = (int)(RawMovementInput * Vector2.right).normalized.x;
         NormaInputY = (int)(RawMovementInput * Vector2.up).normalized.y;
     }
-
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {
@@ -56,4 +88,10 @@ public class PlayerInputHandler : MonoBehaviour
     public void UseJumpInput() => JumpInput = false;
 
     private void ChheckJumpInputTime() => JumpInput = (Time.time >= jumpInputStartTime + inputHoldTime) ? false: JumpInput;
+}
+
+public enum CombatInputs
+{
+    primary,
+    secondary
 }
