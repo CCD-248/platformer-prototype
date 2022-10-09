@@ -97,32 +97,32 @@ public class Player : MonoBehaviour
 
     #region Set Functions
 
-    public void SetVelocityZero()
-    {
-        Rigidbody.velocity = Vector3.zero;
-        CurrentVelocity = Vector2.zero;
-    }
+    //public void SetVelocityZero()
+    //{
+    //    Rigidbody.velocity = Vector3.zero;
+    //    CurrentVelocity = Vector2.zero;
+    //}
 
-    public void SetVelocityX(float vel)
-    {
-        workSpace.Set(vel, CurrentVelocity.y);
-        Rigidbody.velocity = workSpace;
-        CurrentVelocity = workSpace;
-    }
+    //public void SetVelocityX(float vel)
+    //{
+    //    workSpace.Set(vel, CurrentVelocity.y);
+    //    Rigidbody.velocity = workSpace;
+    //    CurrentVelocity = workSpace;
+    //}
 
-    public void SetVelocityY(float vel)
-    {
-        workSpace.Set(CurrentVelocity.x, vel);
-        Rigidbody.velocity = workSpace;
-        CurrentVelocity = workSpace;
-    }
+    //public void SetVelocityY(float vel)
+    //{
+    //    workSpace.Set(CurrentVelocity.x, vel);
+    //    Rigidbody.velocity = workSpace;
+    //    CurrentVelocity = workSpace;
+    //}
 
-    public void SetVelocity(Vector2 vel)
-    {
-        workSpace.Set(vel.x, vel.y);
-        Rigidbody.velocity = workSpace;
-        CurrentVelocity = workSpace;
-    }
+    //public void SetVelocity(Vector2 vel)
+    //{
+    //    workSpace.Set(vel.x, vel.y);
+    //    Rigidbody.velocity = workSpace;
+    //    CurrentVelocity = workSpace;
+    //}
 
     #endregion
 
