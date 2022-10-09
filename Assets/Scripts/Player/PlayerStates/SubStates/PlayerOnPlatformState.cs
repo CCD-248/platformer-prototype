@@ -44,7 +44,7 @@ public class PlayerOnPlatformState : PlayerGroundedState
         base.PhysicsUpdate();
         if (platformRb != null)
         {
-            player.SetVelocity(platformRb.velocity);
+            core.Movement.SetVelocity(platformRb.velocity);
         }
     }
 }

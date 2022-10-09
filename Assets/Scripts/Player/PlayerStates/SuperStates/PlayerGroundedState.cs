@@ -17,8 +17,8 @@ public class PlayerGroundedState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
-        isGrounded = player.CheckIfGrounded();
-        isOnPlatform = player.CheckIsOnPlatform();
+        isGrounded = core.CollisionSenses.CheckIfGrounded();
+        isOnPlatform = core.CollisionSenses.CheckIsOnPlatform();
     }
 
     public override void Enter()

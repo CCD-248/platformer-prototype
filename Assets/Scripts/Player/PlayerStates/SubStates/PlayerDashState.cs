@@ -36,7 +36,7 @@ public class PlayerDashState : PlayerAbilityState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        player.SetVelocityX(playerData.dashSpeed * player.FacingDirection);
+        core.Movement.SetVelocityX(playerData.dashSpeed * core.Movement.FacingDirection);
         if (Mathf.Abs(player.transform.position.x - lastImageXpos) > playerData.dashDistanceBetweenImages)
         {
             PlayerAfterImagePool.Instance.GetFromPool();
