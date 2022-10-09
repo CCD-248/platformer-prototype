@@ -5,6 +5,12 @@ using UnityEngine;
 public class PlayerAttackState : PlayerAbilityState
 {
     private Weapon weapon;
+    private float velocityToSet;
+    private bool setVelocity;
+    private int xInput;
+    private bool checkFlip;
+
+
     public PlayerAttackState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animationName) : base(player, stateMachine, playerData, animationName)
     {
     }
@@ -17,6 +23,9 @@ public class PlayerAttackState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
+
+        setVelocity = false;
+
         weapon.EnterWeapon();
     }
 
@@ -29,6 +38,17 @@ public class PlayerAttackState : PlayerAbilityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        xInput = player.InputHandler.NormaInputX;
+        
+        if (checkFlip)
+        {
+            player.CheckIfShouldFlip(xInput);
+        }
+
+        if (setVelocity)
+        {
+            player.SetVelocityX(velocityToSet * player.FacingDirection);
+        }
     }
 
     public override void PhysicsUpdate()
@@ -40,6 +60,18 @@ public class PlayerAttackState : PlayerAbilityState
     {
         weapon = weap;
         weapon.InitializeWeapon(this);
+    }
+
+    public void SetPlayerVelocity(float vel)
+    {
+        player.SetVelocityX(vel * player.FacingDirection);
+        velocityToSet = vel;
+        setVelocity = true;
+    }
+
+    public void SetFlipCheck(bool b)
+    {
+        checkFlip = b;    
     }
 
     #region Animation Triggers
