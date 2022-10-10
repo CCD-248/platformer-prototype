@@ -30,7 +30,7 @@ public class PlayerState
         player.Animator.SetBool(animationBoolName, true);
         startTime = Time.time;
         isAnimationFinished = false;
-        Debug.Log(animationBoolName);
+        //Debug.Log(animationBoolName);
     }
 
     public virtual void Exit()
