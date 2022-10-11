@@ -7,12 +7,15 @@ public class Movement : CoreComponent
 
     public Vector2 CurrentVelocity { get; private set; }
     private Vector2 workSpace;
+    public bool CanSetVelosity { get; set; }    
     public Rigidbody2D Rigidbody { get; private set; }
     public int FacingDirection { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
+        FacingDirection = 1;
+        CanSetVelosity = true;
         Rigidbody = GetComponentInParent<Rigidbody2D>();
     }
 
@@ -24,32 +27,36 @@ public class Movement : CoreComponent
 
     public void SetVelocityZero()
     {
-        Rigidbody.velocity = Vector3.zero;
-        CurrentVelocity = Vector2.zero;
+        workSpace = Vector3.zero;
+        SetFinalVelocity();
     }
 
     public void SetVelocityX(float vel)
     {
         workSpace.Set(vel, CurrentVelocity.y);
-        Rigidbody.velocity = workSpace;
-        CurrentVelocity = workSpace;
+        SetFinalVelocity();
     }
 
     public void SetVelocityY(float vel)
     {
         workSpace.Set(CurrentVelocity.x, vel);
-        Rigidbody.velocity = workSpace;
-        CurrentVelocity = workSpace;
+        SetFinalVelocity();
     }
 
     public void SetVelocity(Vector2 vel)
     {
         workSpace.Set(vel.x, vel.y);
-        Rigidbody.velocity = workSpace;
-        CurrentVelocity = workSpace;
+        SetFinalVelocity();
     }
 
-    private void Flip()
+    public virtual void SetVelocity(float velocity, Vector2 angle, int direction)
+    {
+        angle.Normalize();
+        workSpace.Set(angle.x * velocity * direction, angle.y * velocity);
+        SetFinalVelocity();
+    }
+
+    public void Flip()
     {
         FacingDirection *= -1;
         Rigidbody.transform.Rotate(0, 180f, 0);
@@ -66,5 +73,14 @@ public class Movement : CoreComponent
     public void SetFacingDirection(int val)
     {
         FacingDirection = val;
+    }
+
+    private void SetFinalVelocity()
+    {
+        if (CanSetVelosity)
+        {
+            Rigidbody.velocity = workSpace;
+            CurrentVelocity = workSpace;
+        }
     }
 }

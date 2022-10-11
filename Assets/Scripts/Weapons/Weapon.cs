@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
     protected Animator baseAnimator;
     protected Animator weaponAnimator;
     protected PlayerAttackState attackState;
-
+    protected Core core;
     protected int attackCounter = 0;
 
     protected virtual void Awake()
@@ -43,9 +43,10 @@ public class Weapon : MonoBehaviour
         attackCounter++;
     }
 
-    public void InitializeWeapon(PlayerAttackState state)
+    public void InitializeWeapon(PlayerAttackState state, Core c)
     {
         attackState = state;
+        core = c;
     }
 
 

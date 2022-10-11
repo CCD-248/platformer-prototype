@@ -8,6 +8,7 @@ public class AggressiveWeapon : Weapon
 
     protected SO_AggressiveWeaponData aggressiveWeaponData;
     private List<IDamageable> detectedDamageables = new List<IDamageable> ();
+    private List<IKnockbackable> detectedKnockbackables = new List<IKnockbackable> ();
 
     protected override void Awake()
     {
@@ -36,6 +37,11 @@ public class AggressiveWeapon : Weapon
         {
             detected.Damage(details.damageAmount);
         }
+
+        foreach (var detected in detectedKnockbackables.ToList())
+        {
+            detected.Knockback(details.knockbackAngle, details.knockbackStrenght, core.Movement.FacingDirection);
+        }
     }
 
     public void AddToDetected(Collider2D collider)
@@ -44,6 +50,11 @@ public class AggressiveWeapon : Weapon
         if (damageable != null)
         {
             detectedDamageables.Add(damageable);
+        }
+        IKnockbackable knockbackable = collider.GetComponent<IKnockbackable>();
+        if (knockbackable != null)
+        {
+            detectedKnockbackables.Add(knockbackable);
         }
     }
 
@@ -54,6 +65,11 @@ public class AggressiveWeapon : Weapon
         if (damageable != null)
         {
             detectedDamageables.Remove(damageable);
+        }
+        IKnockbackable knockbackable = collider.GetComponent<IKnockbackable>();
+        if (knockbackable != null)
+        {
+            detectedKnockbackables.Remove(knockbackable);
         }
     }
 }

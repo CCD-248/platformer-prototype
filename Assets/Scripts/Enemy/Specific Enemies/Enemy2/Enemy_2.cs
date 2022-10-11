@@ -29,9 +29,9 @@ public class Enemy_2 : Entity
     [SerializeField] private Transform meleeAttackPosition;
     [SerializeField] private Transform rangeAttackPosition;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
         dodgeState = new E2_DodgeState(stateMachine, this, "dodge", dodgeStateData, this);
         moveState = new E2_MoveState(stateMachine, this, "move", moveStateData, this);
         idleState = new E2_IdleState(stateMachine, this, "idle", idleStateData, this);
@@ -41,8 +41,10 @@ public class Enemy_2 : Entity
         stunState = new E2_StunState(stateMachine, this, "stun", stunStateData, this);
         deadState = new E2_DeadState(stateMachine, this, "dead", deadStateData, this);
         rangeAttackState = new E2_RangeAttackState(stateMachine, this, "rangeAttack", rangeAttackPosition, rangeAttackStateData, this);
+    }
 
-
+    private void Start()
+    {
         stateMachine.Initialize(moveState);
     }
 
@@ -51,26 +53,26 @@ public class Enemy_2 : Entity
         Gizmos.DrawWireSphere(meleeAttackPosition.position, meleeAttackStateData.attackRadius);
     }
 
-    public override void Damage(AttackDetails details)
-    {
-        base.Damage(details);
-        if (isDead)
-        {
-            stateMachine.ChangeState(deadState);
-        }
-        else if (isStunned && stateMachine.currentState != stunState)
-        {
-            stateMachine.ChangeState(stunState);
-        }
-        else if (CheckPlayerInMinAgroRange())
-        {
-            stateMachine.ChangeState(rangeAttackState);
-        }
-        else if (!CheckPlayerInMinAgroRange())
-        {
-            lookForPlayerState.SetTurnImmediately(true);
-            stateMachine.ChangeState(lookForPlayerState);
-        }
+    //public override void Damage(AttackDetails details)
+    //{
+    //    base.Damage(details);
+    //    if (isDead)
+    //    {
+    //        stateMachine.ChangeState(deadState);
+    //    }
+    //    else if (isStunned && stateMachine.currentState != stunState)
+    //    {
+    //        stateMachine.ChangeState(stunState);
+    //    }
+    //    else if (CheckPlayerInMinAgroRange())
+    //    {
+    //        stateMachine.ChangeState(rangeAttackState);
+    //    }
+    //    else if (!CheckPlayerInMinAgroRange())
+    //    {
+    //        lookForPlayerState.SetTurnImmediately(true);
+    //        stateMachine.ChangeState(lookForPlayerState);
+    //    }
 
-    }
+    //}
 }

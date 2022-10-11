@@ -22,7 +22,7 @@ public class PlayerInAirState : PlayerState
         base.DoChecks();
         isGrounded = core.CollisionSenses.CheckIfGrounded();
         isTouchingWall = core.CollisionSenses.CheckIsTouchingWall();
-        isTouchingLedge = core.CollisionSenses.CheckIsTouchingLedge();
+        isTouchingLedge = core.CollisionSenses.CheckIsTouchingLedgeHorizontal();
 
         if (isTouchingWall && !isTouchingLedge)
         {
