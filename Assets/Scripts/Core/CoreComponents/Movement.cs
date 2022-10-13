@@ -19,7 +19,7 @@ public class Movement : CoreComponent
         Rigidbody = GetComponentInParent<Rigidbody2D>();
     }
 
-    public void LogicUpdate()
+    public override void LogicUpdate()
     {
         CurrentVelocity = Rigidbody.velocity;
     }

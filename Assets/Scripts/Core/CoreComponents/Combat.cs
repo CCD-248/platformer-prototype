@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Combat : CoreComponent, IDamageable, IKnockbackable
 {
+    [SerializeField] private GameObject damageParticle;
+    [SerializeField] private float knockbackDuration = 0.2f;
     private bool isKnockmackActive;
     private float knockbackStartTime;
 
-
-    public void LogicUpdate()
+    public override void LogicUpdate()
     {
         CheckCkonockback();
     }
@@ -16,6 +17,8 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable
     public void Damage(float amount)
     {
         Debug.Log(core.transform.parent.name + " damaged");
+        core.Stats.DecreaseHealth(amount);
+        core.ParticleManager.StartParticlesWithRandomRotation(damageParticle);
     }
 
     public void Knockback(Vector2 angle, float strength, int direction)
@@ -28,7 +31,8 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable
 
     private void CheckCkonockback()
     {
-        if (isKnockmackActive && core.Movement.CurrentVelocity.y <= 0.01f && core.CollisionSenses.CheckIfGrounded())
+        if (isKnockmackActive && ((core.Movement.CurrentVelocity.y <= 0.01f && core.CollisionSenses.CheckIfGrounded())
+            || Time.time > knockbackStartTime + knockbackDuration))
         {
             isKnockmackActive=false;
             core.Movement.CanSetVelosity = true;
