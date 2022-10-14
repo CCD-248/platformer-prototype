@@ -20,12 +20,15 @@ public class PlayerOnPlatformState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("enter platform");
         platformRb = player.GetPlatformRb();
+        core.Movement.SetVelocity(platformRb.velocity);
     }
 
     public override void Exit()
     {
         base.Exit();
+        Debug.Log("exit platform");
         platformRb = null;
     }
 

@@ -37,7 +37,7 @@ public class E1_PlayerDetectedState : PlayerDetectedState
         {
             stateMachine.ChangeState(enemy.lookForPlayerState);
         }
-        else if (!isDetectiongLedge)
+        else if (!isDetectiongLedge && !isPlayerInMaxAgroRange)
         {
             core.Movement.Flip();
             stateMachine.ChangeState(enemy.moveState);

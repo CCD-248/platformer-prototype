@@ -17,14 +17,4 @@ public class Death : CoreComponent
         }
         core.transform.parent.gameObject.SetActive(false);
     }
-
-    //private void OnEnable()
-    //{
-    //    core.Stats.onHealthZero += Die;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    core.Stats.onHealthZero -= Die;
-    //}
 }

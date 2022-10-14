@@ -17,23 +17,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        var b = true;
         cameraVar = GameObject.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
-        playerScript = player.GetComponent<Player>();
-        //playerScript.Core.Stats.onHealthZero += Respawn;
-        while (b)
-        {
-            try
-            {
-                playerScript.Core.Stats.onHealthZero += Respawn;
-                b = false;
-            }
-            catch
-            {
-                b = true;
-            }
-        }
-
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Player>();
+        playerScript.Core.Stats.onHealthZero += Respawn;
     }
 
     private void Update()
@@ -55,6 +41,8 @@ public class GameManager : MonoBehaviour
             var playerTemp = Instantiate(player, spawnPos);
             cameraVar.m_Follow = playerTemp.transform;
             respawn = false;
+            playerScript = GameObject.FindWithTag("Player").GetComponent<Player>();
+            playerScript.Core.Stats.onHealthZero += Respawn;
         }
     }
 }

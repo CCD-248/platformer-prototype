@@ -35,22 +35,6 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region Check Variables
-
-    //[SerializeField] private Transform groundCheck;
-    //[SerializeField] private Transform wallCheck;
-    //[SerializeField] private Transform ledgeCheck;
-
-    #endregion
-
-    #region Other Variables
-
-    //public int FacingDirection { get; private set; }
-    //public Vector2 CurrentVelocity { get; private set; }
-    private Vector2 workSpace;
-
-    #endregion
-
     #region Unity Funcions
 
     private void Awake()
@@ -71,6 +55,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Core.Movement.getCollisionCheck += IgnoreLayers;
         Core.Movement.SetFacingDirection(1);
         Inventory = GetComponent<PlayerInventory>();
         PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
@@ -85,7 +70,6 @@ public class Player : MonoBehaviour
     private void Update()
     {
         currentState = StateMachine.CurrentState.ToString();
-        //CurrentVelocity = Rigidbody.velocity;
         Core.LogicUpdate();
         StateMachine.CurrentState.LogicUpdate();
 
@@ -98,76 +82,25 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region Set Functions
-
-    //public void SetVelocityZero()
-    //{
-    //    Rigidbody.velocity = Vector3.zero;
-    //    CurrentVelocity = Vector2.zero;
-    //}
-
-    //public void SetVelocityX(float vel)
-    //{
-    //    workSpace.Set(vel, CurrentVelocity.y);
-    //    Rigidbody.velocity = workSpace;
-    //    CurrentVelocity = workSpace;
-    //}
-
-    //public void SetVelocityY(float vel)
-    //{
-    //    workSpace.Set(CurrentVelocity.x, vel);
-    //    Rigidbody.velocity = workSpace;
-    //    CurrentVelocity = workSpace;
-    //}
-
-    //public void SetVelocity(Vector2 vel)
-    //{
-    //    workSpace.Set(vel.x, vel.y);
-    //    Rigidbody.velocity = workSpace;
-    //    CurrentVelocity = workSpace;
-    //}
-
-    #endregion
-
-    #region Check Functions
-
-    //public void CheckIfShouldFlip(int xInput)
-    //{
-    //    if (xInput != 0 && xInput != FacingDirection)
-    //    {
-    //        Flip();
-    //    }
-    //}
-
-    //public bool CheckIsTouchingWall()=> Physics2D.Raycast(wallCheck.position, Vector2.right * Core.Movement.FacingDirection, playerData.wallCheckRadius, playerData.whatIsGround);
-
-    //public bool CheckIsTouchingLedge() => Physics2D.Raycast(ledgeCheck.position, Vector2.right * Core.Movement.FacingDirection, playerData.wallCheckRadius, playerData.whatIsGround);
-
-    //public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsGround) || CheckIsOnPlatform();
-
-    //public bool CheckIsOnPlatform() => Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRaius, playerData.whatIsPlatform);
-
-    #endregion
-
     #region Other Functions
 
     public void AnimationTrigger() => StateMachine.CurrentState.AnimationTrigger();
 
     public void AnimationFinishTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
 
-    //private void Flip()
-    //{
-    //    FacingDirection *= -1;
-    //    transform.Rotate(0, 180f, 0);
-    //}
-
-
-
     public Rigidbody2D GetPlatformRb()
     {
         var colider = Physics2D.OverlapCircle(Core.CollisionSenses.GroundCheck.position, playerData.groundCheckRaius, playerData.whatIsPlatform);
         var rb = colider.GetComponent<Rigidbody2D>();
         return rb;
+    }
+    private bool IgnoreLayers()
+    {
+        if (StateMachine.CurrentState == InAirPlayerState)
+        {
+            return true;
+        }
+        return false;
     }
 
     #endregion

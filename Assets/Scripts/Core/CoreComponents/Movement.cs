@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : CoreComponent
 {
-
+    public event Func<bool> getCollisionCheck;
     public Vector2 CurrentVelocity { get; private set; }
     private Vector2 workSpace;
     public bool CanSetVelosity { get; set; }    
     public Rigidbody2D Rigidbody { get; private set; }
     public int FacingDirection { get; private set; }
+
+    private bool ignoreLayers;
 
     protected override void Awake()
     {
@@ -22,6 +25,18 @@ public class Movement : CoreComponent
     public override void LogicUpdate()
     {
         CurrentVelocity = Rigidbody.velocity;
+        if (getCollisionCheck != null)
+        {
+            ignoreLayers = getCollisionCheck.Invoke();
+        }
+        if (ignoreLayers)
+        {
+            Physics2D.IgnoreLayerCollision(10, 7, true);
+        }
+        else
+        {
+            Physics2D.IgnoreLayerCollision(10, 7, false);
+        }
     }
 
 

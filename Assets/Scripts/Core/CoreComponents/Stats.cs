@@ -6,7 +6,11 @@ using UnityEngine;
 public class Stats : CoreComponent
 {
     public event Action onHealthZero;
+    public float StunResistance { get => stunResistance; set => stunResistance = value; }
+    public float StunRecoveryTime { get => stunRecoveryTime; set => stunRecoveryTime = value; }
 
+    [SerializeField] private float stunRecoveryTime = 0.5f;
+    [SerializeField] private float stunResistance = 30;
     [SerializeField] private float maxHealth;
     private float currentHealth;
 

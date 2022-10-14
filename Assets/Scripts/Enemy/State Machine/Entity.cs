@@ -75,23 +75,4 @@ public class Entity : MonoBehaviour
         isStunned = false;
         currentStunResistance = entityData.stunResistance;
     }
-
-    //public virtual void Damage(AttackDetails details)
-    //{
-    //    lastDamageTime = Time.time;
-    //    currentHealth -= details.amountOfDamage;
-    //    currentStunResistance -= details.stunDamageAmount;
-    //    DamageHop(entityData.damageHopSpeed);
-    //    Instantiate(entityData.hitParticle, transform.position, Quaternion.Euler(0f, 0f, Random.Range(0f, 360f)));
-    //    lastDamageDirection = (details.position.x > transform.position.x) ? -1 : 1;
-
-    //    if (currentStunResistance <= 0)
-    //    {
-    //        isStunned = true;
-    //    }
-    //    if (currentHealth <= 0)
-    //    {
-    //        isDead = true;
-    //    }
-    //}
 }

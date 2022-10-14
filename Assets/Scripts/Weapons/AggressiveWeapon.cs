@@ -9,6 +9,7 @@ public class AggressiveWeapon : Weapon
     protected SO_AggressiveWeaponData aggressiveWeaponData;
     private List<IDamageable> detectedDamageables = new List<IDamageable> ();
     private List<IKnockbackable> detectedKnockbackables = new List<IKnockbackable> ();
+    private List<IStunable> detectedStunables = new List<IStunable>();
 
     protected override void Awake()
     {
@@ -36,11 +37,17 @@ public class AggressiveWeapon : Weapon
         foreach (var detected in detectedDamageables.ToList())
         {
             detected.Damage(details.damageAmount);
+           
         }
 
         foreach (var detected in detectedKnockbackables.ToList())
         {
             detected.Knockback(details.knockbackAngle, details.knockbackStrenght, core.Movement.FacingDirection);
+        }
+
+        foreach(var detected in detectedStunables.ToList())
+        {
+            detected.CheckIfShouldStun(details.damageAmount);
         }
     }
 
@@ -56,6 +63,11 @@ public class AggressiveWeapon : Weapon
         {
             detectedKnockbackables.Add(knockbackable);
         }
+        var stunables = collider.GetComponent<IStunable>();
+        if (stunables != null)
+        {
+            detectedStunables.Add(stunables);
+        }
     }
 
 
@@ -70,6 +82,11 @@ public class AggressiveWeapon : Weapon
         if (knockbackable != null)
         {
             detectedKnockbackables.Remove(knockbackable);
+        }
+        var stunables = collider.GetComponent<IStunable>();
+        if (stunables != null)
+        {
+            detectedStunables.Remove(stunables);
         }
     }
 }

@@ -29,9 +29,9 @@ public class PlatformScript : MonoBehaviour
         {
             moveDelegate = MoveVertical;
         }
-        else 
+        else
         {
-            moveDelegate = MoveHorizontal;    
+            moveDelegate = MoveHorizontal;
         }
     }
 
@@ -39,7 +39,10 @@ public class PlatformScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        moveDelegate();
+        if (moveDelegate != null)
+        {
+            moveDelegate();
+        }
     }
 
     protected virtual void MoveVertical()
@@ -56,8 +59,6 @@ public class PlatformScript : MonoBehaviour
         }
         workspace.Set(0, speed * facingDirection);
         rb.velocity = workspace;
-        //Vector3.MoveTowards(transform.position,target.position, speed * facingDirection * Time.deltaTime);
-        //transform.position += new Vector3(0, facingDirection * speed); 
     }
 
     protected virtual void MoveHorizontal()

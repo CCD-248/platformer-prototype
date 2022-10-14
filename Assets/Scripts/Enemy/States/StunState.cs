@@ -10,6 +10,7 @@ public class StunState : State
     protected bool isMovementStop;
     protected bool isPlayerInMinAgroRange;
     protected bool performCloseRangeAction;
+    protected float lastStunTimeEnd;
 
     public StunState(FiniteStateMachine stateMachine, Entity entity, string animBoolName, D_StunState stateData) :
         base(stateMachine, entity, animBoolName)
@@ -28,14 +29,13 @@ public class StunState : State
     public override void Enter()
     {
         base.Enter();
-        core.Movement.SetVelocity(stateData.stunKnockbackSpeed, stateData.stunKnockBackAngle, entity.lastDamageDirection);
         isStunTimeOver = false;
-        isMovementStop = false;
     }
 
     public override void Exit()
     {
         base.Exit();
+        lastStunTimeEnd = Time.time;
         entity.ResetStunResistance();
     }
 
@@ -46,13 +46,14 @@ public class StunState : State
         {
             isStunTimeOver = true;
         }
-
-        if (isGrounded && Time.time >= startTime + stateData.stunKnockbackTime && !isMovementStop)
+        if (isGrounded && Time.time >= startTime + stateData.stunKnockbackTime)
         {
-            isMovementStop = true;
             core.Movement.SetVelocityX(0);
         }
     }
+
+    public bool CanStun() => (Time.time >= lastStunTimeEnd + stateData.stunCooldown);
+    
 
     public override void PhysicsUpdate()
     {

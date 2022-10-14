@@ -45,6 +45,7 @@ public class Enemy_2 : Entity
 
     private void Start()
     {
+        Core.Combat.onStun += ChangeToStunState;
         stateMachine.Initialize(moveState);
     }
 
@@ -53,26 +54,11 @@ public class Enemy_2 : Entity
         Gizmos.DrawWireSphere(meleeAttackPosition.position, meleeAttackStateData.attackRadius);
     }
 
-    //public override void Damage(AttackDetails details)
-    //{
-    //    base.Damage(details);
-    //    if (isDead)
-    //    {
-    //        stateMachine.ChangeState(deadState);
-    //    }
-    //    else if (isStunned && stateMachine.currentState != stunState)
-    //    {
-    //        stateMachine.ChangeState(stunState);
-    //    }
-    //    else if (CheckPlayerInMinAgroRange())
-    //    {
-    //        stateMachine.ChangeState(rangeAttackState);
-    //    }
-    //    else if (!CheckPlayerInMinAgroRange())
-    //    {
-    //        lookForPlayerState.SetTurnImmediately(true);
-    //        stateMachine.ChangeState(lookForPlayerState);
-    //    }
-
-    //}
+    private void ChangeToStunState()
+    {
+        if (stateMachine.currentState != stunState && stunState.CanStun())
+        {
+            stateMachine.ChangeState(stunState);
+        }
+    }
 }
