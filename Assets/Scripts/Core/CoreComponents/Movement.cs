@@ -29,14 +29,6 @@ public class Movement : CoreComponent
         {
             ignoreLayers = getCollisionCheck.Invoke();
         }
-        if (ignoreLayers)
-        {
-            Physics2D.IgnoreLayerCollision(10, 7, true);
-        }
-        else
-        {
-            Physics2D.IgnoreLayerCollision(10, 7, false);
-        }
     }
 
 

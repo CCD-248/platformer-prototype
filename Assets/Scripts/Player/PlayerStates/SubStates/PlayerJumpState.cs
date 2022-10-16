@@ -29,4 +29,9 @@ public class PlayerJumpState : PlayerAbilityState
 
     public void DecreaseAmountOfJumpsLeft() => amountOfJumpsLeft--;
 
+    public override void PhysicsUpdate()
+    {
+        base.PhysicsUpdate();
+        IgnorePlatformLayer(true);
+    }
 }

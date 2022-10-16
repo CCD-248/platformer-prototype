@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGravityOn;
     private bool hasHitGround;
+    [SerializeField] private float damageAmount;
     [SerializeField] private float damageRadius;
     [SerializeField] private float gravityScale;
     [SerializeField] private LayerMask whatIsGround;
@@ -30,7 +31,6 @@ public class Projectile : MonoBehaviour
     {
         if (!hasHitGround)
         {
-            //attackDetails.position = transform.position;
             if (isGravityOn)
             {
                 var angle = Mathf.Atan2(rb.velocity.x, rb.velocity.y) * Mathf.Rad2Deg;
@@ -49,7 +49,13 @@ public class Projectile : MonoBehaviour
             if (damageHit)
             {
                 //damageHit.transform.SendMessage("Damage", attackDetails);
-                Destroy(gameObject);
+                var player = damageHit.GetComponent<IDamageable>();
+                if (player!= null)
+                {
+                    player.Damage(damageAmount);
+                    Destroy(gameObject);
+                }
+
             }
 
             if (groundHit)
@@ -71,7 +77,6 @@ public class Projectile : MonoBehaviour
     { 
         this.speed = speed;
         travelDistance = travel;
-        //attackDetails.amountOfDamage = damage;
     }
 
     private void OnDrawGizmos()

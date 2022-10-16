@@ -14,6 +14,11 @@ public class CombatTestDummy : MonoBehaviour, IDamageable
         Debug.Log($"got {amount} damage");
     }
 
+    public void ObstaclesDamage(float amount)
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void Awake()
     {
         animator = GetComponent<Animator>();

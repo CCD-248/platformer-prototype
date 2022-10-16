@@ -64,7 +64,7 @@ Transform:
   m_Children:
   - {fileID: 1816535463247529285}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1816535463485063394
 SpriteRenderer:
@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11106034cb9d61b479498335ec4d9253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageAmount: 15
   damageRadius: 0.1
   gravityScale: 3
   whatIsGround:

@@ -58,7 +58,7 @@ public class PlayerGroundedState : PlayerState
             player.InputHandler.UseJumpInput();
             stateMachine.ChangeState(player.JumpPlayerState);
         }
-        else if (!isGrounded)
+        else if (!isGrounded && !isOnPlatform)
         {
             player.JumpPlayerState.DecreaseAmountOfJumpsLeft();
             stateMachine.ChangeState(player.InAirPlayerState);
@@ -68,5 +68,6 @@ public class PlayerGroundedState : PlayerState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        IgnorePlatformLayer(isGrounded);
     }
 }

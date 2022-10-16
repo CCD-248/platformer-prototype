@@ -28,7 +28,7 @@ public class CollisionSenses : CoreComponent
 
     public bool CheckIsLedgeAhead() => Physics2D.Raycast(LedgeCheckVertical.position, Vector2.down, wallCheckRadius, whatIsGround);
 
-    public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, groundCheckRaius, whatIsGround) || CheckIsOnPlatform();
+    public bool CheckIfGrounded() => Physics2D.OverlapCircle(groundCheck.position, groundCheckRaius, whatIsGround);
 
     public bool CheckIsOnPlatform() => Physics2D.OverlapCircle(groundCheck.position, groundCheckRaius, whatIsPlatform);
 }

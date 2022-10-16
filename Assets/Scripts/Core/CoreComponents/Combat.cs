@@ -69,4 +69,11 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable, IStunable
     {
         currentStunResistance = core.Stats.StunResistance;
     }
+
+    public void ObstaclesDamage(float amount)
+    {
+        Damage(amount);
+        Debug.Log(core.Movement.CurrentVelocity.normalized);
+        //Knockback(core.Movement.CurrentVelocity.normalized * Vector2.one, amount, -core.Movement.FacingDirection);
+    }
 }

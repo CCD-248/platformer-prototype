@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Transform platformCheck;
+
     #region State Variables
 
     public string currentState;
@@ -96,11 +99,24 @@ public class Player : MonoBehaviour
     }
     private bool IgnoreLayers()
     {
-        if (StateMachine.CurrentState == InAirPlayerState)
+        return true;
+    }
+
+    public float GetPlatformTransormY()
+    {
+        var colider = Physics2D.OverlapCircle(Core.CollisionSenses.GroundCheck.position, playerData.wallCheckRadius, playerData.whatIsPlatform);
+        if (colider != null)
         {
-            return true;
+            var rb = colider.GetComponent<Rigidbody2D>();
+            return rb.transform.position.y;
         }
-        return false;
+        colider = Physics2D.OverlapCircle(platformCheck.transform.position, playerData.wallCheckRadius, playerData.whatIsPlatform);
+        if (colider != null)
+        {
+            var rb = colider.GetComponent<Rigidbody2D>();
+            return rb.transform.position.y;
+        }
+        throw new NullReferenceException();
     }
 
     #endregion

@@ -18,7 +18,8 @@ public class PlatformScript : MonoBehaviour
     protected Vector2 workspace;
     protected delegate void MoveDelegate();
     protected MoveDelegate moveDelegate;
-
+    private float startTime = 0f;
+    [SerializeField] private float ignoreVelosityTime = 0.1f;
 
     private void Start()
     {
@@ -35,13 +36,20 @@ public class PlatformScript : MonoBehaviour
         }
     }
 
-
+    public void OnPlayerEnter()
+    {
+        startTime = Time.time;
+    }
 
     private void FixedUpdate()
     {
-        if (moveDelegate != null)
+        if (moveDelegate != null && Time.time >= startTime + ignoreVelosityTime)
         {
             moveDelegate();
+        }
+        else 
+        {
+            rb.velocity = Vector2.zero;
         }
     }
 

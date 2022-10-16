@@ -30,13 +30,14 @@ public class PlayerState
         player.Animator.SetBool(animationBoolName, true);
         startTime = Time.time;
         isAnimationFinished = false;
-        //Debug.Log(animationBoolName);
+        //Debug.Log("enter " + animationBoolName);
     }
 
     public virtual void Exit()
     {
         DoChecks();
         player.Animator.SetBool(animationBoolName, false);
+        //Debug.Log("exit " + animationBoolName);
     }
 
     public virtual void LogicUpdate()
@@ -54,6 +55,17 @@ public class PlayerState
 
     }
 
+    protected virtual void IgnorePlatformLayer(bool t)
+    {
+        if (t)
+        {
+            Physics2D.IgnoreLayerCollision(10, 7, true);
+        }
+        else
+        {
+            Physics2D.IgnoreLayerCollision(10, 7, false);
+        }
+    }
 
     public virtual void AnimationTrigger() { }
 

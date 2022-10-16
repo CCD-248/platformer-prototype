@@ -61,3 +61,6 @@ TagManager:
   - name: Grass
     uniqueID: 818659919
     locked: 0
+  - name: Obstacles
+    uniqueID: 3000103167
+    locked: 0
