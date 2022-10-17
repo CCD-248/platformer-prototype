@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour
     protected PlayerAttackState attackState;
     protected Core core;
     protected int attackCounter = 0;
+    protected float lastAttackTime;
 
     protected virtual void Awake()
     {
@@ -26,6 +27,7 @@ public class Weapon : MonoBehaviour
         {
             attackCounter = 0; 
         }
+        lastAttackTime = Time.time;
 
         gameObject.SetActive(true);
         baseAnimator.SetBool("attack", true);

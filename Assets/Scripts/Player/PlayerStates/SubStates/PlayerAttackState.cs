@@ -9,10 +9,12 @@ public class PlayerAttackState : PlayerAbilityState
     private bool setVelocity;
     private int xInput;
     private bool checkFlip;
+    private float attackCooldown;
 
 
-    public PlayerAttackState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animationName) : base(player, stateMachine, playerData, animationName)
+    public PlayerAttackState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animationName, float attackCooldown) : base(player, stateMachine, playerData, animationName)
     {
+        this.attackCooldown = attackCooldown;
     }
 
     public override void DoChecks()
@@ -50,6 +52,9 @@ public class PlayerAttackState : PlayerAbilityState
             core.Movement.SetVelocityX(velocityToSet * core.Movement.FacingDirection);
         }
     }
+
+
+    public bool CanAttack() => (Time.time >= startTime + attackCooldown);
 
     public override void PhysicsUpdate()
     {

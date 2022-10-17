@@ -20,7 +20,7 @@ public class PlayerDetectedState : State
     public override void DoChecks()
     {
         base.DoChecks();
-        isDetectiongLedge = core.CollisionSenses.CheckIsLedgeAhead();
+        isDetectiongLedge = core.CollisionSenses.CheckIsLedgeAhead() | entity.CheckObstacles();
         isPlayerInMinAgroRange = entity.CheckPlayerInMinAgroRange();
         isPlayerInMaxAgroRange = entity.CheckPlayerInMaxAgroRange();
         performCloseRangeAction = entity.CheckPlayerInCloseRangeAction();

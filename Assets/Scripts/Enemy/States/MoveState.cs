@@ -16,8 +16,8 @@ public class MoveState : State
     public override void DoChecks()
     {
         base.DoChecks();
-        isDetectiongLedge = core.CollisionSenses.CheckIsLedgeAhead();
-        isDetectiongWall = core.CollisionSenses.CheckIsTouchingWall();
+        isDetectiongLedge = core.CollisionSenses.CheckIsLedgeAhead() | entity.CheckObstacles();
+        isDetectiongWall = core.CollisionSenses.CheckIsTouchingWall() | entity.CheckObstacles();
         isPlayerInMinAgroRange = entity.CheckPlayerInMinAgroRange();
     }
 

@@ -29,6 +29,9 @@ public class PlayerData : ScriptableObject
     public float dashTime = 0.2f;
     public float dashDistanceBetweenImages = 0.1f;
 
+    [Header("Attack state")]
+    public float primaryAttackCooldown = 0f;
+    public float secondaryAttackCooldown = 1f;
 
     [Header("Check Variables")]
     public float groundCheckRaius = 0.3f;

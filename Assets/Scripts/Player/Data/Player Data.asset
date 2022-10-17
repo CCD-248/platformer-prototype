@@ -23,6 +23,9 @@ MonoBehaviour:
   dashCooldownTime: 1
   dashSpeed: 30
   dashTime: 0.2
+  dashDistanceBetweenImages: 0.1
+  primaryAttackCooldown: 0
+  secondaryAttackCooldown: 2
   groundCheckRaius: 0.3
   whatIsGround:
     serializedVersion: 2

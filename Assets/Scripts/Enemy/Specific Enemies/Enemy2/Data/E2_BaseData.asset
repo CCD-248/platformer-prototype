@@ -15,6 +15,7 @@ MonoBehaviour:
   maxHealth: 40
   damageHopSpeed: 8
   wallCheckDistance: 0.3
+  obstaclesCheckDistance: 0.6
   ledgeCheckDistance: 0.5
   closeRangeActionDistance: 1.3
   maxAgroDistance: 8.5
@@ -23,6 +24,9 @@ MonoBehaviour:
   stunResistance: 3
   stunRecoveryTime: 2
   hitParticle: {fileID: 2492003104702295352, guid: 6eed4157598c6784eae8bf220612cd1f, type: 3}
+  whatIsObstacles:
+    serializedVersion: 2
+    m_Bits: 4096
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 1024

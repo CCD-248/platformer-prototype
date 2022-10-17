@@ -11,11 +11,13 @@ public class Projectile : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGravityOn;
     private bool hasHitGround;
+    [SerializeField] private float timeToDestroy = 2f;
     [SerializeField] private float damageAmount;
     [SerializeField] private float damageRadius;
     [SerializeField] private float gravityScale;
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private LayerMask whatIsPlayer;
+    [SerializeField] private LayerMask whatIsEnemy;
     [SerializeField] private Transform damagePosition;
 
     private void Start()
@@ -43,16 +45,27 @@ public class Projectile : MonoBehaviour
     {
         if (!hasHitGround)
         {
-            var damageHit = Physics2D.OverlapCircle(damagePosition.position, damageRadius, whatIsPlayer);
             var groundHit = Physics2D.OverlapCircle(damagePosition.position, damageRadius, whatIsGround);
+            var damageHitPlayer = Physics2D.OverlapCircle(damagePosition.position, damageRadius, whatIsPlayer);
 
-            if (damageHit)
+            if (damageHitPlayer)
             {
-                //damageHit.transform.SendMessage("Damage", attackDetails);
-                var player = damageHit.GetComponent<IDamageable>();
+                var player = damageHitPlayer.GetComponent<IDamageable>();
                 if (player!= null)
                 {
                     player.Damage(damageAmount);
+                    Destroy(gameObject);
+                }
+
+            }
+
+            var damageHitEnemy = Physics2D.OverlapCircle(damagePosition.position, damageRadius, whatIsEnemy);
+            if (damageHitEnemy)
+            {
+                var enemy = damageHitEnemy.GetComponent<IDamageable>();
+                if (enemy != null)
+                {
+                    enemy.Damage(damageAmount);
                     Destroy(gameObject);
                 }
 
@@ -63,6 +76,7 @@ public class Projectile : MonoBehaviour
                 hasHitGround = true;
                 rb.gravityScale = 0;
                 rb.velocity = Vector2.zero;
+                StartCoroutine(WaitForDestroyCoroutine());
             }
 
             if (Mathf.Abs(xStartPosition - transform.position.x) >= travelDistance && isGravityOn)
@@ -71,6 +85,12 @@ public class Projectile : MonoBehaviour
                 rb.gravityScale = gravityScale;
             }
         }
+    }
+
+    private IEnumerator WaitForDestroyCoroutine()
+    {
+        yield return new WaitForSeconds(timeToDestroy);
+        Destroy(gameObject);
     }
 
     public void FireProjectile(float speed, float travel, float damage)

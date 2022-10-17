@@ -160,4 +160,7 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 1024
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 512
   damagePosition: {fileID: 1816535463247529285}

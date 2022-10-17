@@ -374,6 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e996c93f5f02fb343920fd456e042e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstaclesDamageInterval: 2
   damageParticle: {fileID: 2492003104702295352, guid: 6eed4157598c6784eae8bf220612cd1f, type: 3}
   knockbackDuration: 0.2
 --- !u!1 &4073694419565680205
@@ -414,8 +415,9 @@ Transform:
   - {fileID: 4073694418818871921}
   - {fileID: 4073694419009811123}
   - {fileID: 4073694420542512224}
+  - {fileID: 5374792078355280949}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4073694419565680210
 Animator:
@@ -561,6 +563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCheck: {fileID: 4073694418818871921}
+  obstaclesCheck: {fileID: 5374792078355280949}
   entityData: {fileID: 11400000, guid: 58065ccdba3e7db4a9c7c8353d7cdb11, type: 2}
   dodgeStateData: {fileID: 11400000, guid: 0748722ec6efe8144a9d823c90965240, type: 2}
   chargeStateData: {fileID: 0}
@@ -742,6 +745,37 @@ Transform:
   m_GameObject: {fileID: 4073694420542512225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.03, y: -0.009, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4073694419565680204}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6859692412577148958
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5374792078355280949}
+  m_Layer: 9
+  m_Name: ObstaclesCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5374792078355280949
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6859692412577148958}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.041, y: -0.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

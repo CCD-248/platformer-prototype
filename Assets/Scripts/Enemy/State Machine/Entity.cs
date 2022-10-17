@@ -6,6 +6,7 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     [SerializeField] private Transform playerCheck;
+    [SerializeField] private Transform obstaclesCheck;
 
     public FiniteStateMachine stateMachine;
     public D_Entity entityData;
@@ -62,6 +63,12 @@ public class Entity : MonoBehaviour
     public virtual bool CheckPlayerInCloseRangeAction()
     {
         return Physics2D.Raycast(playerCheck.position, transform.right, entityData.closeRangeActionDistance, entityData.whatIsPlayer);
+    }
+
+
+    public virtual bool CheckObstacles()
+    {
+        return Physics2D.Raycast(obstaclesCheck.position, transform.right, entityData.obstaclesCheckDistance, entityData.whatIsObstacles);
     }
 
     public virtual void DamageHop(float velocity)

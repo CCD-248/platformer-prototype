@@ -8,6 +8,7 @@ public class D_Entity : ScriptableObject
     public float maxHealth = 30f;
     public float damageHopSpeed = 3f;
     public float wallCheckDistance = 0.3f;
+    public float obstaclesCheckDistance = 0.6f;
     public float ledgeCheckDistance = 0.5f;
     public float closeRangeActionDistance = 1f;
     public float maxAgroDistance = 4f;
@@ -18,6 +19,7 @@ public class D_Entity : ScriptableObject
 
     public GameObject hitParticle;
 
+    public LayerMask whatIsObstacles;
     public LayerMask whatIsPlayer;
     public LayerMask whatIsGround;
 }

@@ -52,8 +52,8 @@ public class Player : MonoBehaviour
         LedgeClimbPlayerState = new PlayerLedgeClimbState(this, StateMachine, playerData, "ledge");
         PlayerOnPlatformState = new PlayerOnPlatformState(this, StateMachine, playerData, "idle");
         DashState = new PlayerDashState(this, StateMachine, playerData, "move");
-        PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
-        SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack");
+        PrimaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack", playerData.primaryAttackCooldown);
+        SecondaryAttackState = new PlayerAttackState(this, StateMachine, playerData, "attack", playerData.secondaryAttackCooldown);
     }
 
     private void Start()
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         Core.Movement.SetFacingDirection(1);
         Inventory = GetComponent<PlayerInventory>();
         PrimaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
-        //SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.primary]);
+        SecondaryAttackState.SetWeapon(Inventory.weapons[(int)CombatInputs.secondary]);
 
         Rigidbody = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();

@@ -7,6 +7,7 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable, IStunable
 {
     public event Action onStun;
 
+    [SerializeField] private float obstaclesDamageInterval = 2f;
     [SerializeField] private GameObject damageParticle;
     [SerializeField] private float knockbackDuration = 0.2f;
 
@@ -15,6 +16,7 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable, IStunable
     private float knockbackStartTime;
     private float currentStunResistance;
     private float lastStunDamageTime;
+    private float lastObstaclesDamageTime;
 
     public override void LogicUpdate()
     {
@@ -72,8 +74,12 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable, IStunable
 
     public void ObstaclesDamage(float amount)
     {
-        Damage(amount);
-        Debug.Log(core.Movement.CurrentVelocity.normalized);
-        //Knockback(core.Movement.CurrentVelocity.normalized * Vector2.one, amount, -core.Movement.FacingDirection);
+        if (Time.time >= lastObstaclesDamageTime + obstaclesDamageInterval)
+        {
+            lastObstaclesDamageTime = Time.time;
+            Damage(amount);
+            Debug.Log(core.Movement.CurrentVelocity.normalized * Vector2.one);
+            Knockback(new Vector2(0, 2), amount, core.Movement.FacingDirection);
+        }
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3d5f186d29145443b2f6d6e88b2e04a, type: 3}
+  m_Name: Bow_1
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 1816535463485063395, guid: bd35a1a7014845e4b9feffde430bdee0, type: 3}
+  attackDetails:
+  - attackName: back
+    movementSpeed: -1
+    damageAmount: 1
+    knockbackStrenght: 1
+    knockbackAngle: {x: 1, y: 1}
