@@ -21,7 +21,7 @@ TagManager:
   - Weapon
   - Obstacles
   - Trash
-  - 
+  - NPC
   - 
   - 
   - 
@@ -63,4 +63,7 @@ TagManager:
     locked: 0
   - name: Obstacles
     uniqueID: 3000103167
+    locked: 0
+  - name: UI
+    uniqueID: 3313650543
     locked: 0

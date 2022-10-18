@@ -21,7 +21,6 @@ public class Enemy_1 : Entity
     [SerializeField] private D_MeleeAttackState meleeAttackStateData;
     [SerializeField] private D_StunState stunStateData;
     [SerializeField] private D_DeadState deadStateData;
-
     [SerializeField] private Transform meleeAttackPosition;
 
     public override void Awake()

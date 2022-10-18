@@ -6,7 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-
+    public bool TriggerDialog { get; private set; }
+    public bool DialogInput { get; private set; }
     public Vector2 RawMovementInput { get; private set; }
     public int NormaInputX { get; private set; }
     public int NormaInputY { get; private set; }
@@ -18,16 +19,23 @@ public class PlayerInputHandler : MonoBehaviour
 
     [SerializeField] private float inputHoldTime = 0.2f;
     private float jumpInputStartTime;
+    private float triggerInputStartTime;
+    private float dialogInputStartTime;
+
+    private PlayerInput playerInput;
 
     private void Update()
     {
         ChheckJumpInputTime();
+        TriggerDialog = (Time.time >= triggerInputStartTime + inputHoldTime) ? false : true;
+        DialogInput = (Time.time >= dialogInputStartTime + inputHoldTime) ? false : true;
     }
 
     private void Start()
     {
         int count = Enum.GetValues(typeof(CombatInputs)).Length;
         AttackInput = new bool[count];
+        playerInput = GetComponent<PlayerInput>();
     }
 
     public void OnPrimaryAttackInput(InputAction.CallbackContext context)
@@ -82,6 +90,39 @@ public class PlayerInputHandler : MonoBehaviour
             DashInput = true;
         }
     }
+
+
+    public void OnDialogInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            DialogInput = true;
+        }
+    }
+
+    public void OnTriggerDialog(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            TriggerDialog = true;
+        }
+    }
+
+    public void ChangeCurrentActionMapToDialog()
+    {
+        playerInput.actions.FindActionMap("Gameplay").Disable();
+        playerInput.actions.FindActionMap("Dialog").Enable();
+    }
+
+    public void ChangeCurrentActionMapToGameplay()
+    {
+        playerInput.actions.FindActionMap("Dialog").Disable();
+        playerInput.actions.FindActionMap("Gameplay").Enable();
+    }
+
+    public void UseTriggerDialog() => TriggerDialog = false;
+
+    public void UseDialogInput() => DialogInput = false;
 
     public void UseDashInput() => DashInput = false;
 

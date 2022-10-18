@@ -26,7 +26,6 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable, IStunable
 
     public void Damage(float amount)
     {
-        Debug.Log(core.transform.parent.name + "got damage");
         core.Stats.DecreaseHealth(amount);
         core.ParticleManager.StartParticlesWithRandomRotation(damageParticle);
     }
@@ -78,7 +77,6 @@ public class Combat : CoreComponent, IDamageable, IKnockbackable, IStunable
         {
             lastObstaclesDamageTime = Time.time;
             Damage(amount);
-            Debug.Log(core.Movement.CurrentVelocity.normalized * Vector2.one);
             Knockback(new Vector2(0, 2), amount, core.Movement.FacingDirection);
         }
     }

@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "TriggerDialog",
+                    "type": "Button",
+                    "id": "12508434-124b-403d-a605-f69d8a642cac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -146,8 +155,47 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard",
                     "action": "SecondaryAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92cfd89b-4034-4d92-be28-9b72bd69a84a",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "TriggerDialog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Dialog",
+            "id": "c2c464e1-8dbc-4542-a669-5918095395cd",
+            "actions": [
+                {
+                    "name": "NextMessage",
+                    "type": "Value",
+                    "id": "e6bd8350-d09a-4ac8-a425-cdea28b30c56",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "59e372b9-8ae5-4a60-9c08-87a89c9d8fd9",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "NextMessage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

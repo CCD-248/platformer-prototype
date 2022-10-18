@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    [SerializeField] private Transform playerCheck;
+    [SerializeField] protected Transform playerCheck;
     [SerializeField] private Transform obstaclesCheck;
 
     public FiniteStateMachine stateMachine;
@@ -17,8 +17,6 @@ public class Entity : MonoBehaviour
 
 
     private float lastDamageTime;
-    private float currentStunResistance;
-    private float currentHealth;
     private Vector2 velocityWorkSpace;
 
     protected bool isDead;
@@ -27,8 +25,6 @@ public class Entity : MonoBehaviour
     public virtual void Awake()
     {
         Core = GetComponentInChildren<Core>();
-        currentHealth = entityData.maxHealth;
-        currentStunResistance = entityData.stunResistance;
         animator = GetComponent<Animator>();
         stateMachine = new FiniteStateMachine();
         atsm = GetComponent<AnimationToStateMachine>();
@@ -80,6 +76,5 @@ public class Entity : MonoBehaviour
     public virtual void ResetStunResistance()
     {
         isStunned = false;
-        currentStunResistance = entityData.stunResistance;
     }
 }
